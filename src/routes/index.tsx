@@ -68,6 +68,40 @@ const products = [
 ];
 
 function Index() {
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const addToCart = (name: string) => {
+    setCart((c) => ({ ...c, [name]: (c[name] ?? 0) + 1 }));
+    setCartOpen(true);
+  };
+  const dec = (name: string) =>
+    setCart((c) => {
+      const next = { ...c };
+      if ((next[name] ?? 0) <= 1) delete next[name];
+      else next[name] -= 1;
+      return next;
+    });
+  const inc = (name: string) =>
+    setCart((c) => ({ ...c, [name]: (c[name] ?? 0) + 1 }));
+  const removeItem = (name: string) =>
+    setCart((c) => {
+      const next = { ...c };
+      delete next[name];
+      return next;
+    });
+
+  const parsePrice = (s: string) => parseFloat(s.replace("€", "").replace(",", "."));
+  const cartItems = Object.entries(cart).map(([name, qty]) => {
+    const product = products.find((p) => p.name === name)!;
+    return { product, qty };
+  });
+  const totalCount = cartItems.reduce((s, i) => s + i.qty, 0);
+  const totalPrice = cartItems.reduce(
+    (s, i) => s + parsePrice(i.product.price) * i.qty,
+    0,
+  );
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
