@@ -186,7 +186,7 @@ function Index() {
                   src={p.img}
                   alt={p.name}
                   loading="lazy"
-                  className="relative h-[78%] w-[78%] object-contain transition-transform duration-500 group-hover:scale-110"
+                  className="relative h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <h3 className="font-display text-xl font-bold leading-tight">{p.name}</h3>
