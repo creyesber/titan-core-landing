@@ -81,10 +81,9 @@ function Index() {
             </span>
             TITAN<span className="text-primary">.</span>
           </a>
-          <nav className="hidden gap-8 text-sm font-medium text-muted-foreground md:flex">
-            <a href="#productos" className="transition-colors hover:text-foreground">Productos</a>
-            <a href="#ciencia" className="transition-colors hover:text-foreground">Ciencia</a>
-            <a href="#coach" className="transition-colors hover:text-foreground">Coach IA</a>
+          <nav className="hidden gap-6 text-sm font-medium text-muted-foreground md:flex">
+            <a href="mailto:info@titannutrition.com" className="transition-colors hover:text-foreground">info@titannutrition.com</a>
+            <a href="tel:+34900000000" className="transition-colors hover:text-foreground">+34 900 000 000</a>
           </nav>
           <a
             href="#productos"
