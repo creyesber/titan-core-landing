@@ -83,12 +83,26 @@ function Index() {
             <a href="mailto:info@titannutrition.com" className="transition-colors hover:text-foreground">info@titannutrition.com</a>
             <a href="tel:+34900000000" className="transition-colors hover:text-foreground">+34 900 000 000</a>
           </nav>
-          <a
-            href="#productos"
-            className="rounded-xl bg-[image:var(--gradient-green)] px-5 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
-          >
-            Comprar
-          </a>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setCartOpen(true)}
+              aria-label="Abrir carrito"
+              className="relative grid h-10 w-10 place-items-center rounded-xl border border-border bg-card/40 text-foreground transition hover:bg-card"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              {totalCount > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-[image:var(--gradient-green)] px-1 text-[10px] font-bold text-primary-foreground shadow-[var(--shadow-glow)]">
+                  {totalCount}
+                </span>
+              )}
+            </button>
+            <a
+              href="#productos"
+              className="rounded-xl bg-[image:var(--gradient-green)] px-5 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+            >
+              Comprar
+            </a>
+          </div>
         </div>
       </header>
 
@@ -215,8 +229,11 @@ function Index() {
                 {p.use}
               </div>
 
-              <button className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground">
-                Añadir al carrito <Zap className="h-4 w-4" />
+              <button
+                onClick={() => addToCart(p.name)}
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground"
+              >
+                <span aria-hidden>🛒</span> Añadir al carrito
               </button>
             </article>
           ))}
