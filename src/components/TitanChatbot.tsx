@@ -14,8 +14,8 @@ export function TitanChatbot() {
   }, []);
 
   // FAB always 84x84 area; when open, bigger panel
-  const width = size.open ? (size.expanded ? 884 : 404) : 84;
-  const height = size.open ? 660 : 84;
+  const width = size.open ? (size.expanded ? 900 : 420) : 96;
+  const height = size.open ? 720 : 96;
 
   return (
     <iframe
