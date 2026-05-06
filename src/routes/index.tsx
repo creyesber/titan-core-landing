@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero-athlete.jpg";
-import { Check, Sparkles, ArrowRight, ShoppingCart, X, Plus, Minus, Trash2, MessageCircle, Send, Bot } from "lucide-react";
+import { Check, Sparkles, ArrowRight, ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
+import { TitanChatbot } from "@/components/TitanChatbot";
 
 export const Route = createFileRoute("/")({
   component: Index,
