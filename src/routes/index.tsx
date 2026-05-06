@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import heroImg from "@/assets/hero-athlete.jpg";
-import { Check, Zap, Sparkles, ArrowRight, Send } from "lucide-react";
+import { Check, Zap, Sparkles, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -233,33 +232,3 @@ function Index() {
   );
 }
 
-function Field({
-  label,
-  name,
-  type = "text",
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label
-        htmlFor={name}
-        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-      >
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required
-        placeholder={placeholder}
-        className="w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
-      />
-    </div>
-  );
-}
