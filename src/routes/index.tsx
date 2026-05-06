@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import heroImg from "@/assets/hero-athlete.jpg";
-import { Check, Zap, Sparkles, ArrowRight, Send } from "lucide-react";
+import { Check, Zap, Sparkles, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -68,8 +67,6 @@ const products = [
 ];
 
 function Index() {
-  const [sent, setSent] = useState(false);
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -81,10 +78,9 @@ function Index() {
             </span>
             TITAN<span className="text-primary">.</span>
           </a>
-          <nav className="hidden gap-8 text-sm font-medium text-muted-foreground md:flex">
-            <a href="#productos" className="transition-colors hover:text-foreground">Productos</a>
-            <a href="#ciencia" className="transition-colors hover:text-foreground">Ciencia</a>
-            <a href="#coach" className="transition-colors hover:text-foreground">Coach IA</a>
+          <nav className="hidden gap-6 text-sm font-medium text-muted-foreground md:flex">
+            <a href="mailto:info@titannutrition.com" className="transition-colors hover:text-foreground">info@titannutrition.com</a>
+            <a href="tel:+34900000000" className="transition-colors hover:text-foreground">+34 900 000 000</a>
           </nav>
           <a
             href="#productos"
@@ -226,84 +222,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Coach IA / Contact */}
-      <section
-        id="coach"
-        className="relative overflow-hidden border-y border-border bg-[image:var(--gradient-hero)] py-24"
-      >
-        <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_20%_50%,oklch(0.68_0.17_145/0.15),transparent_50%)]" />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> Coach IA Titan
-            </span>
-            <h2 className="mt-5 font-display text-4xl font-bold sm:text-5xl">
-              Tu plan, diseñado por inteligencia artificial.
-            </h2>
-            <p className="mt-5 text-lg text-muted-foreground">
-              Cuéntanos tu objetivo, tu nivel y tu rutina. Nuestro Coach IA analizará tu perfil
-              y te recomendará la combinación de suplementos perfecta para ti.
-            </p>
-            <ul className="mt-8 space-y-3 text-sm">
-              {[
-                "Recomendaciones personalizadas en segundos",
-                "Plan de dosificación detallado",
-                "Soporte continuo de nuestros expertos",
-              ].map((i) => (
-                <li key={i} className="flex items-center gap-3">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-primary">
-                    <Check className="h-3.5 w-3.5" />
-                  </span>
-                  {i}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-            className="rounded-2xl border border-border bg-card/80 p-8 shadow-[var(--shadow-card)] backdrop-blur"
-          >
-            <h3 className="font-display text-2xl font-bold">Envía tu consulta</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Respondemos en menos de 24h.
-            </p>
-
-            <div className="mt-6 space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Nombre" name="name" placeholder="Tu nombre" />
-                <Field label="Email" name="email" type="email" placeholder="tu@email.com" />
-              </div>
-              <Field label="Objetivo" name="goal" placeholder="Ganar masa, definir, rendimiento…" />
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Mensaje
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  placeholder="Cuéntale al coach sobre tu rutina y experiencia…"
-                  className="w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[image:var(--gradient-green)] px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.01]"
-              >
-                {sent ? "¡Enviado!" : "Consultar al Coach IA"} <Send className="h-4 w-4" />
-              </button>
-              {sent && (
-                <p className="text-center text-sm text-primary">
-                  Gracias. Te contactaremos pronto.
-                </p>
-              )}
-            </div>
-          </form>
-        </div>
-      </section>
 
       <footer className="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Titan Nutrition. Forjando atletas con ciencia.
@@ -312,33 +230,3 @@ function Index() {
   );
 }
 
-function Field({
-  label,
-  name,
-  type = "text",
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label
-        htmlFor={name}
-        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-      >
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required
-        placeholder={placeholder}
-        className="w-full rounded-xl border border-input bg-background/60 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
-      />
-    </div>
-  );
-}
