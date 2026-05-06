@@ -62,9 +62,17 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.75rem;
+  /* Titan Nutrition - Premium Dark */
+  --background: oklch(0.16 0 0);
+  --foreground: oklch(0.98 0 0);
+  --titan-green: oklch(0.68 0.17 145);
+  --titan-green-glow: oklch(0.78 0.19 145);
+  --gradient-hero: linear-gradient(135deg, oklch(0.1 0 0) 0%, oklch(0.18 0.02 145) 100%);
+  --gradient-green: linear-gradient(135deg, var(--titan-green), var(--titan-green-glow));
+  --shadow-card: 0 10px 40px -10px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(1 0 0 / 0.05);
+  --shadow-glow: 0 0 40px oklch(0.68 0.17 145 / 0.3);
+  --_old_fg: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
