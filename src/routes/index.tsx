@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 const products = [
   {
     name: "Proteína Whey Isolate 1KG",
-    img: "https://i.ibb.co/hxTnhWfn/proteina.png",
+    img: "https://i.postimg.cc/MKxy1qbq/proteina.png",
     price: "34,95€",
     old: "42,00€",
     points: ["Aislado puro · 0% azúcar", "Sin lactosa", "27g proteína por batido"],
@@ -30,14 +30,14 @@ const products = [
   },
   {
     name: "Creatina Monohidrato Creapure 500g",
-    img: "https://i.ibb.co/BVGvt2Lb/creatina.png",
+    img: "https://i.postimg.cc/nckqkg0p/creatina.png",
     price: "22,50€",
     points: ["100% Sello Creapure®", "Aumento de fuerza y potencia", "Pureza farmacéutica"],
     use: "5g al día con agua o batido. Sin fase de carga.",
   },
   {
     name: "Pre-Entreno 'Explosive Energy'",
-    img: "https://i.ibb.co/4ZN7YMv0/preentreno.png",
+    img: "https://i.postimg.cc/ZKc6c2VJ/preentreno.png",
     price: "27,90€",
     points: ["200mg Cafeína", "Beta-Alanina + Citrulina", "Sabor Frutos Rojos"],
     use: "1 cazo 20 minutos antes de entrenar.",
@@ -45,21 +45,21 @@ const products = [
   },
   {
     name: "Quemagrasas Thermo-Cut",
-    img: "https://i.ibb.co/B5LtqcgM/quemagrasa.png",
+    img: "https://i.postimg.cc/5N383Tn4/quemagrasa.png",
     price: "19,95€",
     points: ["L-Carnitina + Té Verde", "Guaraná termogénico", "Acelera el metabolismo"],
     use: "2 cápsulas por la mañana y 1 antes de entrenar.",
   },
   {
     name: "Multivitamínico Daily Vital",
-    img: "https://i.ibb.co/fVSpxpBk/vitaminas.png",
+    img: "https://i.postimg.cc/8PHLH9tD/vitaminas.png",
     price: "14,50€",
     points: ["Vitaminas A-Z + Minerales", "Refuerza el sistema inmune", "Fórmula completa diaria"],
     use: "1 comprimido diario con el desayuno.",
   },
   {
     name: "Shaker Pro (700ml)",
-    img: "https://i.ibb.co/S7wsdfvF/vaso.png",
+    img: "https://i.postimg.cc/KvNtNwJj/vaso.png",
     price: "4,95€",
     points: ["Libre de BPA", "Cierre hermético", "Compartimento inferior"],
     use: "Apto para lavavajillas.",
