@@ -2374,3 +2374,21 @@
     input.value = '';
   }
 </script>
+<style>html,body{background:transparent !important}</style>
+<script>
+(function(){
+  function postSize(){
+    var shell = document.getElementById('widget-shell');
+    var open = shell && shell.classList.contains('show-widget');
+    var expanded = shell && shell.classList.contains('expanded');
+    parent.postMessage({type:'titan-chat-size', open: !!open, expanded: !!expanded}, '*');
+  }
+  var orig = window.toggleWidget;
+  window.toggleWidget = function(){ orig && orig(); setTimeout(postSize, 50); setTimeout(postSize, 450); };
+  var origOpen = window.openProducts;
+  window.openProducts = function(){ origOpen && origOpen(); setTimeout(postSize, 50); setTimeout(postSize, 450); };
+  var origClose = window.closeProducts;
+  window.closeProducts = function(){ origClose && origClose(); setTimeout(postSize, 50); setTimeout(postSize, 450); };
+  window.addEventListener('load', postSize);
+})();
+</script>
