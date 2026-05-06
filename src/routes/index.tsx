@@ -403,6 +403,77 @@ function Index() {
           </aside>
         </div>
       )}
+
+      {/* Chatbot */}
+      {chatOpen && (
+        <div className="fixed bottom-24 right-6 z-[55] flex h-[540px] w-[380px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_60px_-15px_oklch(0_0_0/0.7),var(--shadow-glow)]">
+          <div className="flex items-center justify-between border-b border-border bg-[image:var(--gradient-green)] px-4 py-3">
+            <div className="flex items-center gap-3">
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-background/20 backdrop-blur">
+                <Bot className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <p className="font-display text-sm font-bold text-primary-foreground">Coach IA</p>
+                <p className="text-[11px] text-primary-foreground/80">En línea · Titan Nutrition</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setChatOpen(false)}
+              className="grid h-8 w-8 place-items-center rounded-lg text-primary-foreground/90 hover:bg-background/20"
+              aria-label="Cerrar chat"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="flex-1 space-y-3 overflow-y-auto bg-background/40 px-4 py-4">
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-sm leading-snug ${
+                    m.role === "user"
+                      ? "bg-[image:var(--gradient-green)] text-primary-foreground rounded-br-sm"
+                      : "border border-border bg-card text-foreground rounded-bl-sm"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-border bg-card p-3">
+            <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 focus-within:border-primary/50">
+              <input
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Escribe tu mensaje..."
+                className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+              />
+              <button
+                onClick={sendMessage}
+                aria-label="Enviar"
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[image:var(--gradient-green)] text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={() => setChatOpen((o) => !o)}
+        aria-label="Abrir chat"
+        className="group fixed bottom-6 right-6 z-[55] flex h-14 w-14 items-center justify-center rounded-full bg-[image:var(--gradient-green)] text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-110"
+      >
+        {chatOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {!chatOpen && (
+          <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-primary/40" />
+        )}
+      </button>
     </div>
 
   );
