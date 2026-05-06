@@ -278,7 +278,112 @@ function Index() {
       <footer className="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Titan Nutrition. Forjando atletas con ciencia.
       </footer>
+
+      {/* Cart Drawer */}
+      {cartOpen && (
+        <div className="fixed inset-0 z-[60]">
+          <div
+            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+            onClick={() => setCartOpen(false)}
+          />
+          <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <h3 className="flex items-center gap-2 font-display text-lg font-bold">
+                <ShoppingCart className="h-5 w-5 text-primary" /> Tu carrito
+                {totalCount > 0 && (
+                  <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs text-primary">
+                    {totalCount}
+                  </span>
+                )}
+              </h3>
+              <button
+                onClick={() => setCartOpen(false)}
+                aria-label="Cerrar"
+                className="grid h-9 w-9 place-items-center rounded-lg border border-border text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {cartItems.length === 0 ? (
+                <p className="mt-10 text-center text-sm text-muted-foreground">
+                  Tu carrito está vacío.
+                </p>
+              ) : (
+                <ul className="space-y-4">
+                  {cartItems.map(({ product, qty }) => (
+                    <li
+                      key={product.name}
+                      className="flex gap-4 rounded-xl border border-border bg-background/40 p-3"
+                    >
+                      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-secondary/50">
+                        <img src={product.img} alt={product.name} className="h-full w-full object-cover" />
+                      </div>
+                      <div className="flex flex-1 flex-col">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-sm font-semibold leading-tight">{product.name}</p>
+                          <button
+                            onClick={() => removeItem(product.name)}
+                            aria-label="Eliminar"
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="mt-2 flex items-center justify-between">
+                          <div className="inline-flex items-center rounded-lg border border-border">
+                            <button
+                              onClick={() => dec(product.name)}
+                              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-foreground"
+                              aria-label="Restar"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="w-7 text-center text-sm">{qty}</span>
+                            <button
+                              onClick={() => inc(product.name)}
+                              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-foreground"
+                              aria-label="Sumar"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
+                          <span className="text-sm font-bold text-primary">
+                            {(parsePrice(product.price) * qty).toFixed(2).replace(".", ",")}€
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="border-t border-border px-6 py-4">
+              <div className="mb-4 flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Total</span>
+                <span className="font-display text-2xl font-bold text-primary">
+                  {totalPrice.toFixed(2).replace(".", ",")}€
+                </span>
+              </div>
+              <button
+                disabled={cartItems.length === 0}
+                onClick={() => {
+                  alert("¡Pedido ficticio realizado! 💪");
+                  setCart({});
+                  setCartOpen(false);
+                }}
+                className="w-full rounded-xl bg-[image:var(--gradient-green)] py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-90 disabled:opacity-40"
+              >
+                Finalizar compra
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
     </div>
+
   );
 }
 
