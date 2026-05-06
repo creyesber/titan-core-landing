@@ -71,27 +71,7 @@ const products = [
 function Index() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState<{ role: "bot" | "user"; text: string }[]>([
-    { role: "bot", text: "¡Hola! Soy tu Coach IA de Titan Nutrition 💪 ¿En qué puedo ayudarte? Pregúntame sobre productos, dosis o tu plan de suplementación." },
-  ]);
 
-  const sendMessage = () => {
-    const text = chatInput.trim();
-    if (!text) return;
-    setMessages((m) => [...m, { role: "user", text }]);
-    setChatInput("");
-    setTimeout(() => {
-      setMessages((m) => [
-        ...m,
-        {
-          role: "bot",
-          text: "Gracias por tu consulta. Para ganar masa muscular te recomiendo nuestra Proteína Whey Isolate + Creatina Creapure. ¿Quieres que te arme un plan completo?",
-        },
-      ]);
-    }, 700);
-  };
 
   const addToCart = (name: string) => {
     setCart((c) => ({ ...c, [name]: (c[name] ?? 0) + 1 }));
