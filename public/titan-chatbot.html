@@ -2243,81 +2243,43 @@
     msgs.appendChild(b);
     msgs.scrollTop = msgs.scrollHeight;
 
-    // Si la IA nos dice que hay productos que mostrar...
     if (data.accion === "mostrar_productos" && data.productos && data.productos.length > 0) {
-
-      // Limpiamos el panel actual
       const panelLista = document.querySelector('.pl');
       panelLista.innerHTML = '<div class="toast" id="toast"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Añadido al carrito correctamente</div>';
 
-      // Por cada producto en el JSON, creamos su tarjeta
       data.productos.forEach((prod, index) => {
         const cardId = `card-ia-${index}`;
         const btnId = `bcmp-ia-${index}`;
-
         globalProducts[cardId] = prod;
+
         const imgsArr = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : [prod.url_imagen];
-        let imgOrCarHtml = '';
         const extLink = `<a href="${prod.url_producto}" target="_blank" class="pc-link-ext" title="Ver en tienda" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`;
 
-        if (imgsArr.length > 1) {
-          let slides = imgsArr.map(src => `<div class="car-item"><img src="${src}" class="car-img" alt="${prod.titulo}"></div>`).join('');
-          let dots = imgsArr.map((_, i) => `<div class="car-dot ${i === 0 ? 'a' : ''}"></div>`).join('');
-          imgOrCarHtml = `
-              <div class="car-wrap">
-                ${extLink}
-                <button class="car-btn prev" onclick="event.stopPropagation();scrollCar(this,-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-                <div class="car-scroll" onscroll="syncCarDots(this)">${slides}</div>
-                <button class="car-btn next" onclick="event.stopPropagation();scrollCar(this,1)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
-                <div class="car-dots">${dots}</div>
-                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_desde}','${imgsArr[0]}')">
-                  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>`;
-        } else {
-          imgOrCarHtml = `
+        // CORRECCIÓN: Usar prod.precio_actual en toggleWL
+        let imgOrCarHtml = `
               <div class="pc-img" style="height:140px; position:relative">
                 ${extLink}
                 <img src="${imgsArr[0]}" alt="${prod.titulo}" style="width:100%; height:100%; object-fit:contain; padding:10px;">
-                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_desde}','${imgsArr[0]}')">
+                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_actual}','${imgsArr[0]}')">
                   <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </button>
               </div>`;
-        }
 
-        // Pills de características
+        // Característica clave compacta
         const featuresHtml = prod.caracteristicas_clave
-          ? prod.caracteristicas_clave.split(',').map(f => `<span class="feat-pill">${f.trim()}</span>`).join('')
+          ? `<div style="font-size:10px; color:var(--ac-d); font-weight:600; background:var(--ac-l); padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:8px;">✨ ${prod.caracteristicas_clave.substring(0, 60)}...</div>`
           : '';
-
-        // Chips de variantes
-        let variantsHtml = '';
-        if (prod.variantes && prod.variantes.length > 0) {
-          variantsHtml = `<div class="pc-variants">`;
-          prod.variantes.forEach((v, idx) => {
-            variantsHtml += `<div class="variant-chip ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); updatePrice(this, '${v.precio}', '${cardId}')">${v.opcion}</div>`;
-          });
-          variantsHtml += `</div>`;
-        }
-
-        // Elementos dinámicos adicionales
-        const pcStockHtml = prod.estado_stock ? `<div class="stock-tag">${prod.estado_stock}</div>` : '';
-        const pcOldPriceHtml = prod.precio_original ? `<span class="old-price" style="font-size:0.9rem">${prod.precio_original}</span>` : '';
 
         const tarjetaHtml = `
             <div class="pc sel" id="${cardId}" style="border:1px solid var(--b); border-radius:14px; overflow:hidden; background:var(--w)">
               ${imgOrCarHtml}
               <div class="pc-bd" style="padding:14px">
-                ${pcStockHtml}
-                <div style="margin-bottom:6px">${featuresHtml}</div>
+                ${featuresHtml}
                 <div class="pc-name" style="font-size:15px; margin-bottom:4px; font-weight:700; color:var(--t1)">${prod.titulo}</div>
                 <div class="pc-pr" style="margin-bottom:12px; display:flex; align-items:baseline; gap:8px">
-                    <span class="pc-price" id="price-${cardId}">${prod.precio_desde}</span>
-                    ${pcOldPriceHtml}
+                    <span class="pc-price" id="price-${cardId}" style="color:var(--ac)">${prod.precio_actual}</span>
+                    ${prod.precio_original ? `<span class="old-price" style="font-size:0.9rem">${prod.precio_original}</span>` : ''}
                 </div>
-                
-                <div style="font-size:11px; color:var(--t3); margin-bottom:6px">Seleccionar versión:</div>
-                ${variantsHtml}
 
                 <div class="pc-acts" style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px">
                   <button class="btn-tertiary" style="padding:8px; font-size:12px; border-radius:8px" onclick="event.stopPropagation();toggleCmpSelect('${cardId}','${btnId}')">Comparar</button>
@@ -2330,10 +2292,7 @@
         panelLista.insertAdjacentHTML('beforeend', tarjetaHtml);
       });
 
-      // Actualizamos el contador de resultados
       document.querySelector('.cnt-badge').innerText = `${data.productos.length} resultados`;
-
-      // Mostramos el panel lateral
       openProducts();
     }
   }
