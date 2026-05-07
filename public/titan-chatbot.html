@@ -2031,8 +2031,9 @@
     const imgs = (prod.imagenes && prod.imagenes.length) ? prod.imagenes : [prod.url_imagen];
     const dvImg = document.querySelector('.dv-img');
 
+    // CORRECCIÓN: Usar prod.precio_actual
     dvImg.innerHTML = `<img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain;padding:15px">
-  <button class="dv-wl ${wlItems[cardId] ? 'saved' : ''}" id="dvwl" data-iid="${cardId}" onclick="toggleWL('${cardId}','dvwl','${prod.titulo}','${prod.precio_desde}','${imgs[0]}')">
+  <button class="dv-wl ${wlItems[cardId] ? 'saved' : ''}" id="dvwl" data-iid="${cardId}" onclick="toggleWL('${cardId}','dvwl','${prod.titulo}','${prod.precio_actual}','${imgs[0]}')">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
   </button>`;
 
@@ -2041,76 +2042,48 @@
       thumbsHtml = `<div class="thumbs">` + imgs.map((img, i) => `<div class="th ${i === 0 ? 'a' : ''}" onclick="changeDvImg(this, '${img}')"><img src="${img}" style="width:100%;height:100%;object-fit:contain;padding:4px;border-radius:8px"></div>`).join('') + `</div>`;
     }
 
-    let featsStr = prod.caracteristicas_clave || '';
-    let featsArr = featsStr ? featsStr.split(',').map(f => f.trim()) : [];
-    let featsHtml = featsArr.length > 0 ? featsArr.map(f => `<div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--t1);margin-bottom:10px;line-height:1.4;font-weight:500"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--ok);fill:var(--ok-l);stroke-width:2.5;flex-shrink:0;border-radius:4px"><polyline points="20 6 9 17 4 12"/></svg>${f}</div>`).join('') : '';
+    // NUEVO: Modo de Empleo y Objetivo Principal
+    let modoEmpleoHtml = prod.modo_empleo ? `
+      <div class="dv-compat-box" style="background:#3d2817; border-color:#e67e22; margin-top:15px;">
+         <div class="dv-compat-title" style="color:#e67e22;">💡 Modo de Empleo</div>
+         <div class="dv-compat-val" style="font-size:12px">${prod.modo_empleo}</div>
+      </div>` : '';
 
-    let variantesHtml = '';
-    if (prod.variantes && prod.variantes.length > 0) {
-      variantesHtml = `
-      <div style="margin-bottom:20px">
-        <div style="font-size:11px;font-weight:800;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Configuraciones Disponibles</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          ${prod.variantes.map((v, i) => `<div class="variant-chip ${i === 0 ? 'active' : ''}" style="font-size:12px;padding:8px 12px" onclick="updatePrice(this, '${v.precio}', '${cardId}')">${v.opcion}</div>`).join('')}
-        </div>
-      </div>
-    `;
-    }
+    let objetivoHtml = prod.objetivo_principal ? `
+      <div style="font-size:12px; font-weight:600; color:var(--t2); margin-bottom:10px;">
+        🎯 Objetivo: <span style="color:var(--t1)">${prod.objetivo_principal}</span>
+      </div>` : '';
 
-    // Stock dinámico
-    const stockHtml = prod.estado_stock ? `<div class="stock-tag">${prod.estado_stock}</div>` : '';
-
-    // Precio original tachado dinámico
-    const oldPriceHtml = prod.precio_original ? `<div class="old-price">${prod.precio_original}</div>` : '';
-
-    // Compatibilidad dinámica
-    let compatHtml = '';
-    if (prod.compatibilidad) {
-      compatHtml = `
-        <div class="dv-compat-box">
-           <div class="dv-compat-title">Vehículo Compatible</div>
-           <div class="dv-compat-val">${prod.compatibilidad}</div>
-        </div>
-        `;
-    }
-
-    // NUEVO: Características destacadas dinámicas solicitadas por el usuario
+    // NUEVO: detalles_tecnicos de Flowise
     let destacadasHtml = '';
-    if (prod.caracteristicas_destacadas) {
-      let destArr = typeof prod.caracteristicas_destacadas === 'string'
-        ? prod.caracteristicas_destacadas.split(',').map(s => s.trim())
-        : prod.caracteristicas_destacadas;
-
+    if (prod.detalles_tecnicos && Array.isArray(prod.detalles_tecnicos)) {
       destacadasHtml = `
         <div class="dv-section">
-            <div style="font-size:11px;font-weight:800;color:var(--t3);margin-bottom:15px;text-transform:uppercase;letter-spacing:1px">Características Destacadas</div>
-            <div class="dv-spec-grid">
-                ${destArr.map(d => `<div class="dv-spec-item" style="justify-content:center"><div class="dv-spec-val" style="font-size:12px;text-align:center">${d}</div></div>`).join('')}
+            <div style="font-size:11px;font-weight:800;color:var(--t3);margin-bottom:15px;text-transform:uppercase;letter-spacing:1px">Detalles Técnicos</div>
+            <div class="dv-spec-grid" style="grid-template-columns: 1fr;">
+                ${prod.detalles_tecnicos.map(d => `
+                  <div class="dv-spec-item" style="padding:10px;">
+                    <div class="dv-spec-val" style="font-size:12px;">${d}</div>
+                  </div>`).join('')}
             </div>
         </div>
         `;
     }
 
-    let specsLargasHtml = '';
-
     const dvBody = document.querySelector('.dv-body');
     dvBody.innerHTML = `
     ${thumbsHtml}
     <div class="dv-section">
-        ${stockHtml}
-        <div class="dv-name" style="font-size:24px;margin-bottom:10px;font-weight:700">${prod.titulo}</div>
-        <div style="display:flex;align-items:baseline;margin-bottom:20px">
-           <div class="dv-price" id="price-dv-${cardId}" style="font-size:32px;font-weight:900">${prod.precio_desde}</div>
-           ${oldPriceHtml}
+        <div class="dv-name" style="font-size:20px;margin-bottom:10px;font-weight:700;line-height:1.2;">${prod.titulo}</div>
+        ${objetivoHtml}
+        <div style="display:flex;align-items:baseline;margin-bottom:10px">
+           <div class="dv-price" id="price-dv-${cardId}" style="font-size:32px;font-weight:900;color:var(--ac)">${prod.precio_actual}</div>
+           ${prod.precio_original ? `<div class="old-price">${prod.precio_original}</div>` : ''}
         </div>
-        
-        ${variantesHtml}
-        ${compatHtml}
+        ${modoEmpleoHtml}
     </div>
-
     ${destacadasHtml}
-    ${specsLargasHtml}
-    
+
     <div style="padding:16px;position:sticky;bottom:0;background:rgba(31,31,31,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--b);display:flex;gap:10px;z-index:20">
         <button class="btn-tertiary" style="flex:1;border-radius:10px;padding:12px;font-size:13px;font-weight:700" onclick="window.open('${prod.url_producto}', '_blank')">Ver en tienda</button>
         <button class="btn-primary" style="flex:1.5;border-radius:10px;padding:12px;font-size:14px;font-weight:800" id="dv-ac-${cardId}" onclick="addCart('dv-ac-${cardId}',true)">Añadir al Carrito</button>
@@ -2270,81 +2243,43 @@
     msgs.appendChild(b);
     msgs.scrollTop = msgs.scrollHeight;
 
-    // Si la IA nos dice que hay productos que mostrar...
     if (data.accion === "mostrar_productos" && data.productos && data.productos.length > 0) {
-
-      // Limpiamos el panel actual
       const panelLista = document.querySelector('.pl');
       panelLista.innerHTML = '<div class="toast" id="toast"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Añadido al carrito correctamente</div>';
 
-      // Por cada producto en el JSON, creamos su tarjeta
       data.productos.forEach((prod, index) => {
         const cardId = `card-ia-${index}`;
         const btnId = `bcmp-ia-${index}`;
-
         globalProducts[cardId] = prod;
+
         const imgsArr = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : [prod.url_imagen];
-        let imgOrCarHtml = '';
         const extLink = `<a href="${prod.url_producto}" target="_blank" class="pc-link-ext" title="Ver en tienda" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`;
 
-        if (imgsArr.length > 1) {
-          let slides = imgsArr.map(src => `<div class="car-item"><img src="${src}" class="car-img" alt="${prod.titulo}"></div>`).join('');
-          let dots = imgsArr.map((_, i) => `<div class="car-dot ${i === 0 ? 'a' : ''}"></div>`).join('');
-          imgOrCarHtml = `
-              <div class="car-wrap">
-                ${extLink}
-                <button class="car-btn prev" onclick="event.stopPropagation();scrollCar(this,-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-                <div class="car-scroll" onscroll="syncCarDots(this)">${slides}</div>
-                <button class="car-btn next" onclick="event.stopPropagation();scrollCar(this,1)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
-                <div class="car-dots">${dots}</div>
-                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_desde}','${imgsArr[0]}')">
-                  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-              </div>`;
-        } else {
-          imgOrCarHtml = `
+        // CORRECCIÓN: Usar prod.precio_actual en toggleWL
+        let imgOrCarHtml = `
               <div class="pc-img" style="height:140px; position:relative">
                 ${extLink}
                 <img src="${imgsArr[0]}" alt="${prod.titulo}" style="width:100%; height:100%; object-fit:contain; padding:10px;">
-                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_desde}','${imgsArr[0]}')">
+                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_actual}','${imgsArr[0]}')">
                   <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </button>
               </div>`;
-        }
 
-        // Pills de características
+        // Característica clave compacta
         const featuresHtml = prod.caracteristicas_clave
-          ? prod.caracteristicas_clave.split(',').map(f => `<span class="feat-pill">${f.trim()}</span>`).join('')
+          ? `<div style="font-size:10px; color:var(--ac-d); font-weight:600; background:var(--ac-l); padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:8px;">✨ ${prod.caracteristicas_clave.substring(0, 60)}...</div>`
           : '';
-
-        // Chips de variantes
-        let variantsHtml = '';
-        if (prod.variantes && prod.variantes.length > 0) {
-          variantsHtml = `<div class="pc-variants">`;
-          prod.variantes.forEach((v, idx) => {
-            variantsHtml += `<div class="variant-chip ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); updatePrice(this, '${v.precio}', '${cardId}')">${v.opcion}</div>`;
-          });
-          variantsHtml += `</div>`;
-        }
-
-        // Elementos dinámicos adicionales
-        const pcStockHtml = prod.estado_stock ? `<div class="stock-tag">${prod.estado_stock}</div>` : '';
-        const pcOldPriceHtml = prod.precio_original ? `<span class="old-price" style="font-size:0.9rem">${prod.precio_original}</span>` : '';
 
         const tarjetaHtml = `
             <div class="pc sel" id="${cardId}" style="border:1px solid var(--b); border-radius:14px; overflow:hidden; background:var(--w)">
               ${imgOrCarHtml}
               <div class="pc-bd" style="padding:14px">
-                ${pcStockHtml}
-                <div style="margin-bottom:6px">${featuresHtml}</div>
+                ${featuresHtml}
                 <div class="pc-name" style="font-size:15px; margin-bottom:4px; font-weight:700; color:var(--t1)">${prod.titulo}</div>
                 <div class="pc-pr" style="margin-bottom:12px; display:flex; align-items:baseline; gap:8px">
-                    <span class="pc-price" id="price-${cardId}">${prod.precio_desde}</span>
-                    ${pcOldPriceHtml}
+                    <span class="pc-price" id="price-${cardId}" style="color:var(--ac)">${prod.precio_actual}</span>
+                    ${prod.precio_original ? `<span class="old-price" style="font-size:0.9rem">${prod.precio_original}</span>` : ''}
                 </div>
-                
-                <div style="font-size:11px; color:var(--t3); margin-bottom:6px">Seleccionar versión:</div>
-                ${variantsHtml}
 
                 <div class="pc-acts" style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px">
                   <button class="btn-tertiary" style="padding:8px; font-size:12px; border-radius:8px" onclick="event.stopPropagation();toggleCmpSelect('${cardId}','${btnId}')">Comparar</button>
@@ -2357,10 +2292,7 @@
         panelLista.insertAdjacentHTML('beforeend', tarjetaHtml);
       });
 
-      // Actualizamos el contador de resultados
       document.querySelector('.cnt-badge').innerText = `${data.productos.length} resultados`;
-
-      // Mostramos el panel lateral
       openProducts();
     }
   }
