@@ -1914,6 +1914,29 @@
     const t = document.getElementById('toast');
     if (t) { t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000) }
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('added') }, 3500);
+
+    // Extraer cardId desde el id del botón (ac-XXX, dv-ac-XXX, wa-XXX, cc1/cc2)
+    try {
+      let cardId = null;
+      if (id.startsWith('dv-ac-')) cardId = id.slice(6);
+      else if (id.startsWith('ac-')) cardId = id.slice(3);
+      else if (id.startsWith('wa-')) cardId = id.slice(3);
+      else if (id === 'cc1') cardId = cmpSelected[0];
+      else if (id === 'cc2') cardId = cmpSelected[1];
+
+      const prod = cardId ? globalProducts[cardId] : null;
+      let payload;
+      if (prod) {
+        const img = (prod.imagenes && prod.imagenes.length ? prod.imagenes[0] : prod.url_imagen) || '';
+        payload = { name: prod.titulo, price: prod.precio_actual || prod.precio_desde || '', img };
+      } else if (cardId && wlItems[cardId]) {
+        const w = wlItems[cardId];
+        payload = { name: w.name, price: w.price, img: w.imgUrl || '' };
+      }
+      if (payload && payload.name) {
+        window.parent.postMessage({ type: 'titan-add-to-cart', product: payload }, '*');
+      }
+    } catch (e) { /* noop */ }
   }
   function toggleWL(iid, id, name, price, imgUrl) {
     const btn = document.getElementById(id);
