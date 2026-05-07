@@ -71,7 +71,9 @@ const products = [
 function Index() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
-
+  const [externalProducts, setExternalProducts] = useState<
+    Record<string, { name: string; img: string; price: string }>
+  >({});
 
   const addToCart = (name: string) => {
     setCart((c) => ({ ...c, [name]: (c[name] ?? 0) + 1 }));
@@ -93,9 +95,34 @@ function Index() {
       return next;
     });
 
-  const parsePrice = (s: string) => parseFloat(s.replace("€", "").replace(",", "."));
+  // Listen for "add to cart" messages emitted by the chatbot iframe
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.data?.type !== "titan-add-to-cart" || !e.data.product?.name) return;
+      const p = e.data.product as { name: string; img?: string; price?: string };
+      const name = p.name;
+      const isLocal = products.some((pr) => pr.name === name);
+      if (!isLocal) {
+        setExternalProducts((prev) => ({
+          ...prev,
+          [name]: { name, img: p.img || "", price: p.price || "0€" },
+        }));
+      }
+      setCart((c) => ({ ...c, [name]: (c[name] ?? 0) + 1 }));
+      setCartOpen(true);
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
+
+  const parsePrice = (s: string) => {
+    const n = parseFloat(String(s).replace(/[^\d,.-]/g, "").replace(",", "."));
+    return Number.isFinite(n) ? n : 0;
+  };
   const cartItems = Object.entries(cart).map(([name, qty]) => {
-    const product = products.find((p) => p.name === name)!;
+    const product =
+      products.find((p) => p.name === name) ||
+      externalProducts[name] || { name, img: "", price: "0€" };
     return { product, qty };
   });
   const totalCount = cartItems.reduce((s, i) => s + i.qty, 0);
