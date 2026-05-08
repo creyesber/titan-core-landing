@@ -1891,6 +1891,17 @@
       }
       if (payload && payload.name) {
         window.parent.postMessage({ type: 'titan-add-to-cart', product: payload }, '*');
+        // Confirmación visible en el chat
+        try {
+          const msgs = document.getElementById('msgs');
+          if (msgs) {
+            const m = document.createElement('div');
+            m.className = 'mg bot';
+            m.innerHTML = `<div class="bbl">✅ <strong>${payload.name}</strong> se ha añadido a tu carrito.</div><div class="mt">ahora</div>`;
+            msgs.appendChild(m);
+            msgs.scrollTop = msgs.scrollHeight;
+          }
+        } catch (e) {}
       }
     } catch (e) { /* noop */ }
   }
