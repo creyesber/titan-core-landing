@@ -206,12 +206,16 @@ function Index() {
               >
                 Ver catálogo <ArrowRight className="h-4 w-4" />
               </a>
-              <a
-                href="#coach"
+              <button
+                type="button"
+                onClick={() => {
+                  const iframe = document.querySelector<HTMLIFrameElement>('iframe[title="Coach IA Titan"]');
+                  iframe?.contentWindow?.postMessage({ type: 'titan-open-chat' }, '*');
+                }}
                 className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/40 px-7 py-3.5 text-base font-semibold text-foreground backdrop-blur transition hover:bg-card"
               >
                 Hablar con el Coach IA
-              </a>
+              </button>
             </div>
 
             <div className="mt-14 grid max-w-xl grid-cols-3 gap-6 border-t border-border pt-8">
