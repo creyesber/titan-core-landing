@@ -2313,5 +2313,12 @@
   var origClose = window.closeProducts;
   window.closeProducts = function(){ origClose && origClose(); setTimeout(postSize, 50); setTimeout(postSize, 450); };
   window.addEventListener('load', postSize);
+  window.addEventListener('message', function(e){
+    if (e.data && e.data.type === 'titan-open-chat') {
+      var shell = document.getElementById('widget-shell');
+      var isOpen = shell && shell.classList.contains('show-widget');
+      if (!isOpen) window.toggleWidget();
+    }
+  });
 })();
 </script>
