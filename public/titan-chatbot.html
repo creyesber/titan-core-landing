@@ -1857,9 +1857,10 @@
 
   var wlItems = {}, cmpSelected = [], globalProducts = {};
   function showTab(t) {
-    document.querySelectorAll('.tab').forEach((b, i) => b.classList.toggle('active', ['chat', 'wishlist', 'history'][i] === t));
+    document.querySelectorAll('.tab').forEach((b, i) => b.classList.toggle('active', ['chat', 'wishlist'][i] === t));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('tab-' + t).classList.add('active');
+    const panel = document.getElementById('tab-' + t);
+    if (panel) panel.classList.add('active');
   }
   function addCart(id, isDetail) {
     const btn = document.getElementById(id); if (!btn) return;
