@@ -2021,9 +2021,11 @@
     const imgs = (prod.imagenes && prod.imagenes.length) ? prod.imagenes : [prod.url_imagen];
     const dvImg = document.querySelector('.dv-img');
 
-    // CORRECCIÓN: Usar prod.precio_actual
+    const _t = String(prod.titulo || '').replace(/'/g, "\\'");
+    const _p = String(prod.precio_actual || '').replace(/'/g, "\\'");
+    const _i = String(imgs[0] || '').replace(/'/g, "\\'");
     dvImg.innerHTML = `<img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain;padding:15px">
-  <button class="dv-wl ${wlItems[cardId] ? 'saved' : ''}" id="dvwl" data-iid="${cardId}" onclick="toggleWL('${cardId}','dvwl','${prod.titulo}','${prod.precio_actual}','${imgs[0]}')">
+  <button class="dv-wl ${wlItems[cardId] ? 'saved' : ''}" id="dvwl" data-iid="${cardId}" onclick="toggleWL('${cardId}','dvwl','${_t}','${_p}','${_i}')">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
   </button>`;
 
