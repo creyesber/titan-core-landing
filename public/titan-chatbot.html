@@ -2239,23 +2239,23 @@
 
       data.productos.forEach((prod, index) => {
         const cardId = `card-ia-${index}`;
-        const btnId = `bcmp-ia-${index}`;
         globalProducts[cardId] = prod;
 
         const imgsArr = (prod.imagenes && prod.imagenes.length > 0) ? prod.imagenes : [prod.url_imagen];
+        const safeTitulo = String(prod.titulo || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safePrecio = String(prod.precio_actual || '').replace(/'/g, "\\'");
+        const safeImg = String(imgsArr[0] || '').replace(/'/g, "\\'");
         const extLink = `<a href="${prod.url_producto}" target="_blank" class="pc-link-ext" title="Ver en tienda" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>`;
 
-        // CORRECCIÓN: Usar prod.precio_actual en toggleWL
         let imgOrCarHtml = `
               <div class="pc-img" style="height:140px; position:relative">
                 ${extLink}
                 <img src="${imgsArr[0]}" alt="${prod.titulo}" style="width:100%; height:100%; object-fit:contain; padding:10px;">
-                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${prod.titulo}','${prod.precio_actual}','${imgsArr[0]}')">
+                <button class="wl-btn" id="wl-${cardId}" onclick="event.stopPropagation();toggleWL('${cardId}','wl-${cardId}','${safeTitulo}','${safePrecio}','${safeImg}')">
                   <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </button>
               </div>`;
 
-        // Característica clave compacta
         const featuresHtml = prod.caracteristicas_clave
           ? `<div style="font-size:10px; color:var(--ac-d); font-weight:600; background:var(--ac-l); padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:8px;">✨ ${prod.caracteristicas_clave.substring(0, 60)}...</div>`
           : '';
@@ -2272,8 +2272,7 @@
                 </div>
 
                 <div class="pc-acts" style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px">
-                  <button class="btn-tertiary" style="padding:8px; font-size:12px; border-radius:8px" onclick="event.stopPropagation();toggleCmpSelect('${cardId}','${btnId}')">Comparar</button>
-                  <button class="btn-secondary" style="padding:8px; font-size:12px; border-radius:8px" onclick="event.stopPropagation(); openProductDetail('${cardId}')">Detalles</button>
+                  <button class="btn-secondary" style="padding:8px; font-size:12px; border-radius:8px; grid-column:span 2" onclick="event.stopPropagation(); openProductDetail('${cardId}')">Ver detalles</button>
                   <button class="btn-primary" style="padding:10px; font-size:13px; grid-column:span 2; font-weight:700; border-radius:8px" id="ac-${cardId}" onclick="event.stopPropagation();addCart('ac-${cardId}')">Añadir al carrito</button>
                 </div>
               </div>
