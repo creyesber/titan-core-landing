@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 const products = [
   {
     name: "Proteína Whey Isolate 1KG",
-    img: "https://i.postimg.cc/MKxy1qbq/proteina.png",
+    img: "https://i.postimg.cc/2S2p66Yh/proteina.png",
     price: "34,95€",
     old: "42,00€",
     points: ["Aislado puro · 0% azúcar", "Sin lactosa", "27g proteína por batido"],
@@ -32,14 +32,14 @@ const products = [
   },
   {
     name: "Creatina Monohidrato Creapure 500g",
-    img: "https://i.postimg.cc/nckqkg0p/creatina.png",
+    img: "https://i.postimg.cc/BbWkyPTz/creatina.png",
     price: "22,50€",
     points: ["100% Sello Creapure®", "Aumento de fuerza y potencia", "Pureza farmacéutica"],
     use: "5g al día con agua o batido. Sin fase de carga.",
   },
   {
     name: "Pre-Entreno 'Explosive Energy'",
-    img: "https://i.postimg.cc/ZKc6c2VJ/preentreno.png",
+    img: "https://i.postimg.cc/cCq2jtRp/preentreno.png",
     price: "27,90€",
     points: ["200mg Cafeína", "Beta-Alanina + Citrulina", "Sabor Frutos Rojos"],
     use: "1 cazo 20 minutos antes de entrenar.",
