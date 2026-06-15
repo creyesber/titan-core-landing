@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 export function TitanChatbot() {
   const [size, setSize] = useState({ open: false, expanded: false });
+  const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+  const [vh, setVh] = useState(typeof window !== "undefined" ? window.innerHeight : 768);
 
   useEffect(() => {
     const onMsg = (e: MessageEvent) => {
@@ -9,13 +11,32 @@ export function TitanChatbot() {
         setSize({ open: !!e.data.open, expanded: !!e.data.expanded });
       }
     };
+    const onResize = () => {
+      setVw(window.innerWidth);
+      setVh(window.innerHeight);
+    };
     window.addEventListener("message", onMsg);
-    return () => window.removeEventListener("message", onMsg);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("message", onMsg);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
-  // FAB always 84x84 area; when open, bigger panel
-  const width = size.open ? (size.expanded ? 960 : 460) : 110;
-  const height = size.open ? 800 : 110;
+  const isMobile = vw < 640;
+
+  let width: number;
+  let height: number;
+  if (!size.open) {
+    width = 110;
+    height = 110;
+  } else if (isMobile) {
+    width = vw;
+    height = vh;
+  } else {
+    width = size.expanded ? 960 : 460;
+    height = 800;
+  }
 
   return (
     <iframe

@@ -1697,13 +1697,15 @@ html,body{background:transparent !important}
 /* ══ RESPONSIVE MOBILE ══ */
 @media (max-width: 640px) {
   .shell {
-    right: 12px;
-    left: 12px;
-    bottom: 88px;
+    right: 8px !important;
+    left: 8px !important;
+    bottom: 96px !important;
+    top: 8px;
     width: auto !important;
-    max-width: calc(100vw - 24px);
-    max-height: calc(100vh - 110px);
-    padding: 12px;
+    max-width: none;
+    height: auto;
+    padding: 10px;
+    border-radius: 14px;
   }
   .shell.expanded {
     width: auto !important;
@@ -1715,10 +1717,6 @@ html,body{background:transparent !important}
   .shell.expanded .pp {
     width: 100% !important;
   }
-  /* Product grid: single column on mobile */
-  .pc-img {
-    height: 160px;
-  }
-  /* Compare grids stack */
+  .pc-img { height: 160px; }
   .cmp-bar .cmp-go { font-size: 12px; }
 }
