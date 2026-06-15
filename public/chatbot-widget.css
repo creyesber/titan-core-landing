@@ -1693,3 +1693,32 @@
 
 
 html,body{background:transparent !important}
+
+/* ══ RESPONSIVE MOBILE ══ */
+@media (max-width: 640px) {
+  .shell {
+    right: 12px;
+    left: 12px;
+    bottom: 88px;
+    width: auto !important;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 110px);
+    padding: 12px;
+  }
+  .shell.expanded {
+    width: auto !important;
+  }
+  /* When expanded on mobile, hide chat panel and show product panel full width */
+  .shell.expanded .cp {
+    display: none;
+  }
+  .shell.expanded .pp {
+    width: 100% !important;
+  }
+  /* Product grid: single column on mobile */
+  .pc-img {
+    height: 160px;
+  }
+  /* Compare grids stack */
+  .cmp-bar .cmp-go { font-size: 12px; }
+}
