@@ -147,7 +147,7 @@ function renderInitialMessage() {
 
   msgs.innerHTML = `
     <div class="mg bot">
-      <div class="bbl">${bot.saludo || '¡Hola! ¿En qué puedo ayudarte?'}</div>
+      <div class="bbl">${mdToHtml(bot.saludo || '¡Hola! ¿En qué puedo ayudarte?')}</div>
       <div class="mt">ahora</div>
       ${chipsHtml ? `<div class="chips">${chipsHtml}</div>` : ''}
     </div>
