@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chatbot configurable</title>
+  <link rel="stylesheet" href="chatbot-widget.css">
+</head>
+<body>
+<button class="chatbot-fab" onclick="toggleWidget()" title="Abrir chatbot" data-chatbot-fab-title>
+  <svg viewBox="0 0 24 24">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </svg>
+</button>
+
+<div class="shell" id="widget-shell">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chat')">
+      <svg viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+      Chat
+    </button>
+    <button class="tab" onclick="showTab('wishlist')">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+      Favoritos <span id="wl-count"
+        style="display:none;background:var(--red);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;margin-left:4px">0</span>
+    </button>
+  </div>
+
+  <div class="tab-panel active" id="tab-chat">
+    <div class="widget">
+
+      <div class="cp">
+        <div class="cp-hd">
+          <div class="av"><svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg></div>
+          <div style="flex:1;min-width:0">
+            <div class="bn" data-chatbot-assistant-name>Asistente</div>
+            <div class="bs">
+              <div class="sdot"></div><span data-chatbot-status>En línea</span>
+            </div>
+          </div>
+          <div class="hbts">
+            <button class="hbt" onclick="showTab('wishlist')" title="Favoritos">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              <div class="badge-dot" id="wl-dot"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="msgs" id="msgs"></div>
+
+        <div class="cp-ft">
+          <div class="inp-row">
+            <input class="inp" id="chat-input" type="text" placeholder="Escribe tu mensaje..." data-chatbot-placeholder
+              onkeydown="if(event.key==='Enter')sendFromInput()">
+            <button class="sbtn" onclick="sendFromInput()"><svg viewBox="0 0 24 24">
+                <path d="M5 12l14-7-6 14-2-5-6-2z" />
+              </svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pp">
+        <div class="pp-hd">
+          <div class="pp-hl">
+            <div class="pp-title">Recomendados</div>
+            <div class="cnt-badge">0 resultados</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button onclick="closeProducts()"
+              style="background:none;border:none;cursor:pointer;color:var(--t2);display:flex;align-items:center;justify-content:center"
+              title="Cerrar panel">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="cmp-bar" id="cmp-bar" style="display:none"></div>
+
+        <div id="list-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+          <div class="pl">
+            <div class="toast" id="toast"><svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>Añadido al carrito correctamente</div>
+
+          </div>
+        </div>
+
+        <div class="cmp-view" id="cmp-view" style="display:none"></div>
+
+        <div class="dv" id="dv">
+          <button class="back-btn" onclick="hideDetail()"><svg viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>Volver a resultados</button>
+          <div class="dv-img">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 9l1-5h16l1 5M3 9h18M3 9l2 11h14l2-11" />
+            </svg>
+          </div>
+          <div class="dv-body">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-wishlist">
+    <div
+      style="background:var(--w);border:1px solid var(--b);border-radius:14px;height:560px;display:flex;flex-direction:column;overflow:hidden">
+      <div
+        style="padding:14px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+        <div style="font-size:14px;font-weight:700;color:var(--t1)" data-chatbot-wishlist-title>Mis favoritos</div>
+        <div class="cnt-badge" id="wl-badge" style="background:var(--sf);color:var(--t1)">0 productos</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px" id="wl-list">
+        <div class="wl-empty" id="wl-empty">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          <p data-chatbot-wishlist-empty>Aún no tienes favoritos guardados</p>
+          <button class="btn-secondary chip" onclick="showTab('chat')"
+            style="margin-top:8px;border-radius:8px;padding:8px 16px" data-chatbot-explore-label>Explorar productos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+  <script src="chatbot-config.js"></script>
+  <script src="chatbot-widget.js"></script>
+</body>
+</html>
