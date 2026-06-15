@@ -19,7 +19,7 @@ export function TitanChatbot() {
 
   return (
     <iframe
-      src="/titan-chatbot.html"
+      src="/chatbot-widget.html"
       title="Coach IA Titan"
       style={{
         position: "fixed",
