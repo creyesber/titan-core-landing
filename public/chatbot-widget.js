@@ -547,7 +547,7 @@ initChatbotConfig();
       document.getElementById('indicador-escribiendo').remove();
       const err = document.createElement('div');
       err.className = 'mg bot';
-      err.innerHTML = `<div class="bbl" style="background:var(--red-l);border-color:var(--red)">${getChatbotConfig().chatbot.error}</div>`;
+      err.innerHTML = `<div class="bbl" style="background:var(--red-l);border-color:var(--red)">${mdToHtml(getChatbotConfig().chatbot.error || 'Ha ocurrido un error.')}</div>`;
       msgs.appendChild(err);
       msgs.scrollTop = msgs.scrollHeight;
     }
