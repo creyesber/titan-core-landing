@@ -560,7 +560,7 @@ initChatbotConfig();
     // Dibujar el mensaje de texto del bot
     const b = document.createElement('div');
     b.className = 'mg bot';
-    b.innerHTML = `<div class="bbl">${data.mensaje_chat || data.respuesta || data.text || "Te muestro algunas opciones."}</div><div class="mt">ahora</div>`;
+    b.innerHTML = `<div class="bbl">${mdToHtml(data.mensaje_chat || data.respuesta || data.text || "Te muestro algunas opciones.")}</div><div class="mt">ahora</div>`;
     msgs.appendChild(b);
     msgs.scrollTop = msgs.scrollHeight;
 
