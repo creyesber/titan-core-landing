@@ -6,6 +6,64 @@ function getChatbotConfig() {
   return window.CHATBOT_CONFIG || {};
 }
 
+/* Mini renderizador de Markdown -> HTML (seguro) */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function mdToHtml(md) {
+  if (md == null) return '';
+  let src = String(md).replace(/\r\n/g, '\n');
+  // Code blocks ```
+  const codeBlocks = [];
+  src = src.replace(/```([\s\S]*?)```/g, (_, code) => {
+    codeBlocks.push(code);
+    return `\u0000CB${codeBlocks.length - 1}\u0000`;
+  });
+  // Inline code `code`
+  const inlineCodes = [];
+  src = src.replace(/`([^`\n]+)`/g, (_, code) => {
+    inlineCodes.push(code);
+    return `\u0000IC${inlineCodes.length - 1}\u0000`;
+  });
+  // Escape HTML
+  src = escapeHtml(src);
+  // Headings
+  src = src.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+  src = src.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+  src = src.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+  // Bold **text** y *text* / _text_
+  src = src.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  src = src.replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  src = src.replace(/(^|[\s(])_([^_\n]+)_/g, '$1<em>$2</em>');
+  // Enlaces [txt](url)
+  src = src.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  // Listas
+  src = src.replace(/(?:^|\n)((?:\s*[-*]\s+.+(?:\n|$))+)/g, (m, block) => {
+    const items = block.trim().split(/\n/).map(l => l.replace(/^\s*[-*]\s+/, '')).map(t => `<li>${t}</li>`).join('');
+    return `\n<ul>${items}</ul>`;
+  });
+  src = src.replace(/(?:^|\n)((?:\s*\d+\.\s+.+(?:\n|$))+)/g, (m, block) => {
+    const items = block.trim().split(/\n/).map(l => l.replace(/^\s*\d+\.\s+/, '')).map(t => `<li>${t}</li>`).join('');
+    return `\n<ol>${items}</ol>`;
+  });
+  // Saltos de línea -> <br> (fuera de bloques de bloque)
+  src = src.split(/\n{2,}/).map(p => {
+    if (/^\s*<(h\d|ul|ol|pre|blockquote)/.test(p)) return p;
+    return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+  // Restaurar inline code
+  src = src.replace(/\u0000IC(\d+)\u0000/g, (_, i) => `<code>${escapeHtml(inlineCodes[+i])}</code>`);
+  // Restaurar code blocks
+  src = src.replace(/\u0000CB(\d+)\u0000/g, (_, i) => `<pre><code>${escapeHtml(codeBlocks[+i])}</code></pre>`);
+  return src;
+}
+window.mdToHtml = mdToHtml;
+
 function getSessionKey() {
   const cfg = getChatbotConfig();
   const clientId = (cfg.cliente && (cfg.cliente.id || cfg.cliente.nombre)) || 'default';
