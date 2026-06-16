@@ -1716,7 +1716,7 @@ html,body{background:transparent !important}
     overflow: hidden;
   }
   .shell.show-widget {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
   }
   .tabs {
