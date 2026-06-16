@@ -163,6 +163,15 @@ function initChatbotConfig() {
 initChatbotConfig();
 
 
+  function scrollMessagesBottom() {
+    const msgs = document.getElementById('msgs');
+    if (!msgs) return;
+    requestAnimationFrame(() => {
+      msgs.scrollTop = msgs.scrollHeight;
+      setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 120);
+    });
+  }
+
   let widgetOpen = false;
   function toggleWidget() {
     widgetOpen = !widgetOpen;
@@ -180,6 +189,7 @@ initChatbotConfig();
   function openProducts() {
     const shell = document.getElementById('widget-shell');
     if (shell) shell.classList.add('expanded');
+    scrollMessagesBottom();
   }
   function closeProducts() {
     const shell = document.getElementById('widget-shell');
