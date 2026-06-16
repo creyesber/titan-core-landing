@@ -169,9 +169,11 @@ initChatbotConfig();
     const shell = document.getElementById('widget-shell');
     if (widgetOpen) {
       shell.style.display = 'block';
+      document.body.classList.add('widget-open');
       setTimeout(() => shell.classList.add('show-widget'), 10);
     } else {
       shell.classList.remove('show-widget');
+      document.body.classList.remove('widget-open');
       setTimeout(() => shell.style.display = 'none', 300);
     }
   }
