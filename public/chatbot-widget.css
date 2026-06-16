@@ -1743,14 +1743,14 @@ html,body{background:transparent !important}
   .shell.expanded .cp {
     display: flex;
     width: 100%;
-    flex: 0 0 42%;
-    max-height: 42%;
+    flex: 0 0 48%;
+    max-height: 48%;
     border-right: none;
     border-bottom: 1px solid var(--b);
   }
   .shell.expanded .pp {
     width: 100% !important;
-    flex: 1 1 58%;
+    flex: 1 1 52%;
     min-height: 0;
     opacity: 1;
     pointer-events: auto;
@@ -1759,14 +1759,23 @@ html,body{background:transparent !important}
     flex-direction: column;
   }
   .shell.expanded .cp-hd {
-    padding: 8px 12px;
+    padding: 7px 12px;
   }
   .shell.expanded .msgs {
     padding: 8px 10px;
     gap: 8px;
   }
   .shell.expanded .cp-ft {
-    padding: 8px 10px;
+    padding: 7px 10px;
+  }
+  .shell.expanded .pp-hd {
+    padding: 8px 12px;
+  }
+  .shell.expanded .pl {
+    padding: 8px;
+  }
+  .shell.expanded .pc {
+    margin-bottom: 8px;
   }
   .tab-panel.active {
     flex: 1;
@@ -1784,7 +1793,9 @@ html,body{background:transparent !important}
   body.widget-open .chatbot-fab {
     display: none;
   }
-  .pc-img { height: 130px !important; }
-  .pc-bd { padding: 12px !important; }
+  .pc-img { height: 104px !important; }
+  .pc-bd { padding: 10px !important; }
+  .pc-name { font-size: 13px !important; }
+  .pc-price { font-size: 1.15rem !important; }
   .cmp-bar .cmp-go { font-size: 12px; }
 }
