@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 const products = [
   {
     name: "Proteína Whey Isolate 1KG",
-    img: "https://i.postimg.cc/2S2p66Yh/proteina.png",
+    img: "https://i.postimg.cc/X7QGRVcs/proteina.png",
     price: "34,95€",
     old: "42,00€",
     points: ["Aislado puro · 0% azúcar", "Sin lactosa", "27g proteína por batido"],
@@ -32,14 +32,14 @@ const products = [
   },
   {
     name: "Creatina Monohidrato Creapure 500g",
-    img: "https://i.postimg.cc/BbWkyPTz/creatina.png",
+    img: "https://i.postimg.cc/02cMT80r/creatina.png",
     price: "22,50€",
     points: ["100% Sello Creapure®", "Aumento de fuerza y potencia", "Pureza farmacéutica"],
     use: "5g al día con agua o batido. Sin fase de carga.",
   },
   {
     name: "Pre-Entreno 'Explosive Energy'",
-    img: "https://i.postimg.cc/cCq2jtRp/preentreno.png",
+    img: "https://i.postimg.cc/VLDrxYWv/preentreno.png",
     price: "27,90€",
     points: ["200mg Cafeína", "Beta-Alanina + Citrulina", "Sabor Frutos Rojos"],
     use: "1 cazo 20 minutos antes de entrenar.",
@@ -47,21 +47,21 @@ const products = [
   },
   {
     name: "Quemagrasas Thermo-Cut",
-    img: "https://i.postimg.cc/J02fqYT3/quemagrasa.png",
+    img: "https://i.postimg.cc/dt4kbqjL/quemagrasa.png",
     price: "19,95€",
     points: ["L-Carnitina + Té Verde", "Guaraná termogénico", "Acelera el metabolismo"],
     use: "2 cápsulas por la mañana y 1 antes de entrenar.",
   },
   {
     name: "Multivitamínico Daily Vital",
-    img: "https://i.postimg.cc/Hk0KNLnZ/vitaminas.png",
+    img: "https://i.postimg.cc/kXf60nv2/vitaminas.png",
     price: "14,50€",
     points: ["Vitaminas A-Z + Minerales", "Refuerza el sistema inmune", "Fórmula completa diaria"],
     use: "1 comprimido diario con el desayuno.",
   },
   {
     name: "Shaker Pro (700ml)",
-    img: "https://i.postimg.cc/QVG44L3M/vaso.png",
+    img: "https://i.postimg.cc/t4JZyLBq/vaso.png",
     price: "4,95€",
     points: ["Libre de BPA", "Cierre hermético", "Compartimento inferior"],
     use: "Apto para lavavajillas.",
