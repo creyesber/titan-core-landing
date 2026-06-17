@@ -659,6 +659,20 @@ initChatbotConfig();
 
 
 (function(){
+  function applyMobileClass(){
+    var isMobile = false;
+    try { isMobile = (window.top && window.top.innerWidth ? window.top.innerWidth : window.innerWidth) < 640; }
+    catch(e){ isMobile = window.innerWidth < 640; }
+    document.documentElement.classList.toggle('mobile', isMobile);
+  }
+  applyMobileClass();
+  window.addEventListener('resize', applyMobileClass);
+  window.addEventListener('message', function(e){
+    if (e.data && e.data.type === 'titan-chat-viewport') {
+      document.documentElement.classList.toggle('mobile', !!e.data.isMobile);
+    }
+  });
+
   function postSize(){
     var shell = document.getElementById('widget-shell');
     var open = shell && shell.classList.contains('show-widget');
