@@ -1,11 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function TitanChatbot() {
   const [size, setSize] = useState({ open: false, expanded: false });
   const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
   const [vh, setVh] = useState(typeof window !== "undefined" ? window.innerHeight : 768);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
+    const sendViewport = () => {
+      const w = window.innerWidth;
+      iframeRef.current?.contentWindow?.postMessage(
+        { type: "titan-chat-viewport", isMobile: w < 640 },
+        "*"
+      );
+    };
     const onMsg = (e: MessageEvent) => {
       if (e.data?.type === "titan-chat-size") {
         setSize({ open: !!e.data.open, expanded: !!e.data.expanded });
@@ -14,12 +22,17 @@ export function TitanChatbot() {
     const onResize = () => {
       setVw(window.innerWidth);
       setVh(window.innerHeight);
+      sendViewport();
     };
     window.addEventListener("message", onMsg);
     window.addEventListener("resize", onResize);
+    const onLoad = () => sendViewport();
+    iframeRef.current?.addEventListener("load", onLoad);
+    sendViewport();
     return () => {
       window.removeEventListener("message", onMsg);
       window.removeEventListener("resize", onResize);
+      iframeRef.current?.removeEventListener("load", onLoad);
     };
   }, []);
 
@@ -40,6 +53,7 @@ export function TitanChatbot() {
 
   return (
     <iframe
+      ref={iframeRef}
       src="/chatbot-widget.html"
       title="Coach IA Titan"
       style={{
