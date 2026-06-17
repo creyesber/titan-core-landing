@@ -625,7 +625,25 @@ initChatbotConfig();
       });
 
       document.querySelector('.cnt-badge').innerText = `${data.productos.length} resultados`;
-      openProducts();
+
+      if (document.documentElement.classList.contains('mobile')) {
+        // En móvil no abrimos automáticamente el panel: insertamos un aviso clicable en el chat
+        const n = data.productos.length;
+        const card = document.createElement('div');
+        card.className = 'mg bot';
+        card.innerHTML = `
+          <div class="product-recommend-card">
+            <div style="font-size:12.5px;color:var(--t1);font-weight:600;line-height:1.4">
+              ✨ Tengo ${n} producto${n !== 1 ? 's' : ''} recomendado${n !== 1 ? 's' : ''} para ti.
+            </div>
+            <button class="prc-btn" onclick="openProducts()">Ver producto${n !== 1 ? 's' : ''} (${n})</button>
+          </div>
+          <div class="mt">ahora</div>`;
+        msgs.appendChild(card);
+        msgs.scrollTop = msgs.scrollHeight;
+      } else {
+        openProducts();
+      }
     }
   }
 
@@ -641,6 +659,20 @@ initChatbotConfig();
 
 
 (function(){
+  function applyMobileClass(){
+    var isMobile = false;
+    try { isMobile = (window.top && window.top.innerWidth ? window.top.innerWidth : window.innerWidth) < 640; }
+    catch(e){ isMobile = window.innerWidth < 640; }
+    document.documentElement.classList.toggle('mobile', isMobile);
+  }
+  applyMobileClass();
+  window.addEventListener('resize', applyMobileClass);
+  window.addEventListener('message', function(e){
+    if (e.data && e.data.type === 'titan-chat-viewport') {
+      document.documentElement.classList.toggle('mobile', !!e.data.isMobile);
+    }
+  });
+
   function postSize(){
     var shell = document.getElementById('widget-shell');
     var open = shell && shell.classList.contains('show-widget');
